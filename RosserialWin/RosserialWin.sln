@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SendMsg", "RosserialWin\RosserialWin.vcxproj", "{D6807AD9-9F67-4221-A556-73449FB96231}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetMsg", "GetMsg\GetMsg.vcxproj", "{DB30B8B6-C2D2-49A3-A71A-982F8C582AA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6807AD9-9F67-4221-A556-73449FB96231}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6807AD9-9F67-4221-A556-73449FB96231}.Debug|Win32.Build.0 = Debug|Win32
+		{D6807AD9-9F67-4221-A556-73449FB96231}.Release|Win32.ActiveCfg = Release|Win32
+		{D6807AD9-9F67-4221-A556-73449FB96231}.Release|Win32.Build.0 = Release|Win32
+		{DB30B8B6-C2D2-49A3-A71A-982F8C582AA8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB30B8B6-C2D2-49A3-A71A-982F8C582AA8}.Debug|Win32.Build.0 = Debug|Win32
+		{DB30B8B6-C2D2-49A3-A71A-982F8C582AA8}.Release|Win32.ActiveCfg = Release|Win32
+		{DB30B8B6-C2D2-49A3-A71A-982F8C582AA8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
