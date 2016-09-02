@@ -4,6 +4,9 @@
 
 #pragma once
 #include "afxwin.h"
+#include <Mmsystem.h>
+#pragma   comment(lib,"winmm.lib")
+
 #define CM_IRA		(WM_APP+200)
 
 // CarmMFCDlg dialog
@@ -41,4 +44,5 @@ public:
 	afx_msg void OnBnClickedBtnLeft();
 	afx_msg void OnBnClickedBtnRight();
 	afx_msg void OnBnClickedBtnPcl();
+	afx_msg void OnBnClickedBtnSound();
 };

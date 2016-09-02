@@ -67,12 +67,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 void pcl_pose_callback(const geometry_msgs::Vector3 & pose)
 {
 	//printf("Received pose %f, %f, %f\n", pose.x,pose.y,pose.z);
-	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 20 ,(pose.x*100) );
-	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 21 ,(pose.y*100) );
-	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 22 ,(pose.z*100) );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 30 ,(pose.x*100) );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 31 ,(pose.y*100) );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 32 ,(pose.z*100) );
 }
 
+int speed_counter = 0;
+double Time = 0;
 double dX = 0;
+double dY = 0;
 double dTh = 0;
 geometry_msgs::Vector3 pcl_cmd;
 void thrROS(void* p)
@@ -82,6 +85,7 @@ void thrROS(void* p)
 	nh.initNode(ros_master);
 
 	geometry_msgs::Twist twist_msg;
+	//ros::Publisher cmd_vel_pub("asusbot_diff_diff_drive_controller/cmd_vel", &twist_msg);
 	ros::Publisher cmd_vel_pub("r1/cmd_vel", &twist_msg);
 	nh.advertise(cmd_vel_pub);
 	ros::Subscriber <geometry_msgs::Vector3> poseSub("/pcl_POS_msg", &pcl_pose_callback);
@@ -93,14 +97,22 @@ void thrROS(void* p)
 	while (1)
 	{
 		twist_msg.linear.x = dX;
-		twist_msg.linear.y = 0;
+		twist_msg.linear.y = dY;
 		twist_msg.linear.z = 0;
 		twist_msg.angular.x = 0;
 		twist_msg.angular.y = 0;
 		twist_msg.angular.z = dTh;
 		cmd_vel_pub.publish(&twist_msg);
-		dX = 0;
-		dTh = 0;
+		if(speed_counter)
+		{
+			speed_counter--;
+		}
+		else
+		{
+			dX = 0;
+			dTh = 0;
+			Time = 0;
+		}
 
 		if(pcl_cmd.x!=0)
 		{
@@ -122,28 +134,49 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		if(wParam == 10)//motion
 		{
+			speed_counter = 10;
 			switch(lParam)
 			{
 			case 1://up
-				dX=20;
+				dX=.05;
 			break;
 			case 2://down
-				dX=-.2;
+				//dX=-.05;
+				dTh=0.314;
+				speed_counter=10;
 			break;
 			case 3://left
-				dTh=.2;
+				dTh=.05;
 			break;
 			case 4://right
-				dTh=-.2;
+				dTh=-.05;
 			break;
 			}
 		}
+		if(wParam == 20) //specify the time interval that user want the robot to arrive within
+		{
+			Time = (double)lParam/1000;  // unit: time: sec, lParam: msec.
+			speed_counter = lParam/100;
+		}
+		if (Time)
+		{
+			dX = (wParam==21)  ?( (double)lParam / (Time*100) )  :dX;
+			dY = (wParam==22)  ?( (double)lParam / (Time*100) )  :dY;
+			dTh = (wParam==23) ?( (double)lParam / (Time*100) )  :dTh;
+		}
+		
+
 		if(wParam == 99)//PCL cmd
 		{
 			switch(lParam)
 			{
 			case 1:
-				pcl_cmd.x = 111;
+				pcl_cmd.x = 1.0;
+				pcl_cmd.y = 22;
+				pcl_cmd.z = 3;
+			break;
+			case 2:
+				pcl_cmd.x = 10.0;
 				pcl_cmd.y = 22;
 				pcl_cmd.z = 3;
 			break;

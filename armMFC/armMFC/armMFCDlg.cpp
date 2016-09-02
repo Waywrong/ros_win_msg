@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CarmMFCDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_RIGHT, &CarmMFCDlg::OnBnClickedBtnRight)
 	ON_REGISTERED_MESSAGE( sBroadcastCommand, CarmMFCDlg::onBroadcastCommand )
 	ON_BN_CLICKED(IDC_BTN_PCL, &CarmMFCDlg::OnBnClickedBtnPcl)
+	ON_BN_CLICKED(IDC_BTN_SOUND, &CarmMFCDlg::OnBnClickedBtnSound)
 END_MESSAGE_MAP()
 
 
@@ -183,7 +184,11 @@ void CarmMFCDlg::OnBnClickedBtnM1()//Left Arm Demo
 
 void CarmMFCDlg::OnBnClickedBtnUp()
 {
-	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 10 ,1 );
+	//::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 10 ,1 );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 20, 1000 );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 21, 0);
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 22, 0 );
+	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 23, 314/2 );
 }
 
 
@@ -211,13 +216,13 @@ LRESULT CarmMFCDlg::onBroadcastCommand( UINT uID, LPARAM lCmd )
 	static float fPos[3];
 	switch(uID)
 	{
-	case 20:
+	case 30:
 		fPos[0]=((float)lCmd)/100.;
 		break;
-	case 21:
+	case 31:
 		fPos[1]=((float)lCmd)/100.;
 		break;
-	case 22:
+	case 32:
 		fPos[2]=((float)lCmd)/100.;
 		break;
 	//case 1://connect
@@ -233,4 +238,10 @@ LRESULT CarmMFCDlg::onBroadcastCommand( UINT uID, LPARAM lCmd )
 void CarmMFCDlg::OnBnClickedBtnPcl()
 {
 	::PostMessageA( (HWND)HWND_BROADCAST,sBroadcastCommand, 99 ,1 );
+}
+
+
+void CarmMFCDlg::OnBnClickedBtnSound()
+{
+	PlaySound("intro.wav", NULL, SND_ASYNC);
 }
