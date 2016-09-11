@@ -15,7 +15,6 @@ class CarmMFCDlg : public CDialogEx
 // Construction
 public:
 	CarmMFCDlg(CWnd* pParent = NULL);	// standard constructor
-
 // Dialog Data
 	enum { IDD = IDD_ARMMFC_DIALOG };
 
@@ -45,4 +44,7 @@ public:
 	afx_msg void OnBnClickedBtnRight();
 	afx_msg void OnBnClickedBtnPcl();
 	afx_msg void OnBnClickedBtnSound();
+
+	TCP_Ser *mTCP_Ser;
+	afx_msg void OnBnClickedBtnM2();
 };

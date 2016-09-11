@@ -74,10 +74,9 @@ BEGIN_MESSAGE_MAP(CarmMFCDlg, CDialogEx)
 	ON_REGISTERED_MESSAGE( sBroadcastCommand, CarmMFCDlg::onBroadcastCommand )
 	ON_BN_CLICKED(IDC_BTN_PCL, &CarmMFCDlg::OnBnClickedBtnPcl)
 	ON_BN_CLICKED(IDC_BTN_SOUND, &CarmMFCDlg::OnBnClickedBtnSound)
+	ON_BN_CLICKED(IDC_BTN_M2, &CarmMFCDlg::OnBnClickedBtnM2)
 END_MESSAGE_MAP()
 
-
-// CarmMFCDlg message handlers
 
 BOOL CarmMFCDlg::OnInitDialog()
 {
@@ -109,7 +108,8 @@ BOOL CarmMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
-
+	AllocConsole();
+	mTCP_Ser = new TCP_Ser(2000,this);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -178,9 +178,13 @@ void CarmMFCDlg::OnBnClickedBtnExit()
 
 void CarmMFCDlg::OnBnClickedBtnM1()//Left Arm Demo
 {
-	edMsg.SetWindowText("Left Arm");
+	_cprintf("Demo1:Pick up left\n");
 }
 
+void CarmMFCDlg::OnBnClickedBtnM2()
+{
+	_cprintf("Demo2:Pick up right\n");
+}
 
 void CarmMFCDlg::OnBnClickedBtnUp()
 {
@@ -225,9 +229,12 @@ LRESULT CarmMFCDlg::onBroadcastCommand( UINT uID, LPARAM lCmd )
 	case 32:
 		fPos[2]=((float)lCmd)/100.;
 		break;
-	//case 1://connect
-	//	this->OnBnClickedBtnClient();
-	//	break;
+	case 291://Pick up left
+		this->OnBnClickedBtnM1();
+		break;
+	case 292://Pick up Right
+		this->OnBnClickedBtnM2();
+		break;
 	}
 	CString strMsg;
 	strMsg.Format("pos:%4.2f, %4.2f, %4.2f",fPos[0],fPos[1],fPos[2]);
@@ -245,3 +252,5 @@ void CarmMFCDlg::OnBnClickedBtnSound()
 {
 	PlaySound("intro.wav", NULL, SND_ASYNC);
 }
+
+
